@@ -56,12 +56,12 @@ sy match zscStateLabel /\h\w*:/ contained
 sy keyword zscStateType goto loop wait stop fail contained
 
 sy keyword zscStateParam bright canraise fast light nodelay offset slow contained
-sy   match zscStateSta /\S\{4}\s\+\S\+\s\+\(\d\+\|random(\s*\d\+\s*,\s*\d\+\s*)\)\(\s\+bright\|\s\+canraise\|\s\+fast\|\s\+nodelay\|\s\+slow\|\s\+light\s*(\s*"[^"]*"\s*)\|\s\+offset\s*(\s*\(\d\|-\|+\)\+\s*,\s*\(\d\|-\|+\)\+\s*)\)*/ skipwhite skipempty contained contains=zscStateParam,zscStateNum nextgroup=zscStateBlk,zscStateFcn
+sy   match zscStateSta /\S\{4,6}\s\+\S\+\s\+\(\d\+\|random(\s*\d\+\s*,\s*\d\+\s*)\)\(\s\+bright\|\s\+canraise\|\s\+fast\|\s\+nodelay\|\s\+slow\|\s\+light\s*(\s*"[^"]*"\s*)\|\s\+offset\s*(\s*\(\d\|-\|+\)\+\s*,\s*\(\d\|-\|+\)\+\s*)\)*/ skipwhite skipempty contained contains=zscStateParam,zscStateNum nextgroup=zscStateBlk,zscStateFcn
 sy   match zscStateFcn /\w\+/ contained contains=@ZscCode nextgroup=zscStatePrn
 sy  region zscStatePrn transparent fold start=+(+ end=+)+ contained contains=@ZscCode,zscStatePrn
 sy  region zscStateBlk transparent fold start=+{+ end=+}+ contained contains=@ZscCode,zscStateBlk
 
-sy cluster ZscStates contains=zscStateSta,zscStateType,zscStateLabel
+sy cluster ZscStates contains=zscStateSta,zscStateType,zscStateLabel,zscComment
 
 " Actor Default Definitions --------------------------------------------------|
 
