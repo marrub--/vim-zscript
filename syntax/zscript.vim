@@ -8,20 +8,24 @@ let b:current_syntax="zscript"
 
 sy case ignore
 
+sy sync minlines=200
+sy sync maxlines=500
+
 " Class Definitions ----------------------------------------------------------|
 
-sy keyword zscType int8 uint8 int16 uint16 int uint float double float32 float64 string vector2 vector3 bool textureid spriteid statelabel void array map voidptr let
+sy keyword zscType int8 uint8 int16 uint16 int uint float double float32 float64 string vector2 vector3 bool textureid spriteid statelabel void array map voidptr color sound sbyte byte short ushort name
+sy   match zscType /@/
 
-sy keyword zscStorage class struct enum const property extend
+sy keyword zscStorage class struct enum const property extend flagdef let
 
-sy keyword zscFlag abstract ui play replaces native version clearscope private protected meta transient readonly deprecated static virtualscope virtual override final action vararg internal
+sy keyword zscFlag abstract ui play replaces native version clearscope private protected meta transient readonly deprecated static virtualscope virtual override final action vararg internal latent
 
 sy keyword zscStatement in out sizeof alignof is new self invoker
 sy   match zscStatement "#include"
 
 sy keyword zscConstant false true null
 
-sy keyword zscTodo contained TODO FIXME
+sy keyword zscTodo contained TODO FIXME HACK XXX NB NOTE
 
 sy region zscComment start="/\*" end="\*/" contains=zscTodo,@Spell
 sy  match zscComment "//.*$" contains=zscTodo,@Spell

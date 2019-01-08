@@ -1,3 +1,3 @@
-au BufRead,BufNewFile *.zsc setfiletype zscript
+au BufRead,BufNewFile *.zsc setf zscript
 
 " EOF
