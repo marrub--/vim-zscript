@@ -49,43 +49,52 @@ sy region zscName start=+'+ end=+'+ end=+$+
 
 sy keyword zscOperator cross dot
 
-sy cluster ZscCode contains=zscOperator,zscName,zscString,zscNumber,zscRepeat,zscConditional,zscLabel,zscComment,zscConstant,zscStatement,zscFlag,zscStorage,zscType
+sy cluster zscCode contains=zscOperator,zscName,zscString,zscNumber,zscRepeat,zscConditional,zscLabel,zscComment,zscConstant,zscStatement,zscFlag,zscStorage,zscType
 
 " State Definitions ----------------------------------------------------------|
 
 sy match zscStateNum /\<-\=\d\+\>/ contained
 
-sy match zscStateLabel /\h\w*:/ contained
+sy match zscStateLabel /\(\h\w*\.\=\)\+:/ contained
 
 sy keyword zscStateType goto loop wait stop fail contained
 
-sy keyword zscStateParam bright canraise fast light nodelay offset slow contained
-sy   match zscStateSta /\S\{4,6}\s\+\S\+\s\+\(\d\+\|random(\s*\d\+\s*,\s*\d\+\s*)\)\(\s\+bright\|\s\+canraise\|\s\+fast\|\s\+nodelay\|\s\+slow\|\s\+light\s*(\s*"[^"]*"\s*)\|\s\+offset\s*(\s*\(\d\|-\|+\)\+\s*,\s*\(\d\|-\|+\)\+\s*)\)*/ skipwhite skipempty contained contains=zscStateParam,zscStateNum nextgroup=zscStateBlk,zscStateFcn
-sy   match zscStateFcn /\w\+/ contained contains=@ZscCode nextgroup=zscStatePrn
-sy  region zscStatePrn transparent fold start=+(+ end=+)+ contained contains=@ZscCode,zscStatePrn
-sy  region zscStateBlk transparent fold start=+{+ end=+}+ contained contains=@ZscCode,zscStateBlk
+sy keyword zscStateParam bright canraise fast nodelay slow random skipwhite skipempty contained nextgroup=@zscStateMid
+sy   match zscStateParam /\s\+offset\s*(\s*\(\d\|-\|+\)\+\s*,\s*\(\d\|-\|+\)\+\s*)\s*/ skipwhite skipempty contained contains=zscStateNum nextgroup=@zscStateMid
+sy   match zscStateParam /\s\+light\s*(\s*"[^"]*"\s*)\s*/ skipwhite skipempty contained nextgroup=@zscStateMid
 
-sy cluster ZscStates contains=zscStateSta,zscStateType,zscStateLabel,zscComment
+sy   match zscStateSta /\S\{4,6}\s\+/ skipwhite skipempty contained nextgroup=zscStateFrm
+sy   match zscStateFrm /\S\+/ skipwhite skipempty contained nextgroup=zscStateTic
+sy   match zscStateTic /\(\(\d\|-\|+\)\+\|random(\s*\d\+\s*,\s*\d\+\s*)\)/ skipwhite skipempty contained contains=zscStateNum nextgroup=@zscStateMid
+sy   match zscStateFcn /\w\+/ skipwhite skipempty contained contains=@zscCode nextgroup=zscStatePrn,zscStateEnd
+sy  region zscStatePrn transparent start=+(+ end=+)+ skipwhite skipempty contained contains=@zscCode,zscStatePrn
+sy  region zscStateBlk transparent fold start=+{+ end=+}+ skipwhite skipempty contained contains=@zscCode,zscStateBlk
+sy   match zscStateEnd /;/ skipwhite skipempty contained
+
+sy cluster zscStateMid contains=zscStateParam,zscStateBlk,zscStateFcn,zscStateEnd
+sy cluster zscStates contains=zscStateSta,zscStateType,zscStateLabel,zscComment
 
 " Actor Default Definitions --------------------------------------------------|
 
 sy match zscDeftDefn /\(\w\+\.\=\)\+/ skipwhite skipempty contained nextgroup=zscDeftSet
-sy match zscDeftSet /.*;/ contained contains=@ZscCode
+sy match zscDeftSet /.*;/ contained contains=@zscCode
 
 sy match zscDeftFlag /\(-\|+\)\(\w\+\.\=\)\+/ contained
 
-sy cluster ZscDefaults contains=zscDeftDefn,zscDeftFlag
+sy cluster zscDefaults contains=zscDeftDefn,zscDeftFlag,zscComment
 
 " Blocks ---------------------------------------------------------------------|
 
 sy keyword zscStatesSta states skipwhite skipempty nextgroup=zscStatesMid,zscStatesEnd
-sy   match zscStatesMid /(\(actor\|overlay\|weapon\|item\))/ skipwhite skipempty nextgroup=zscStatesEnd
-sy  region zscStatesEnd start=+{+ end=+}+ skipwhite skipempty contained contains=@ZscStates
+sy   match zscStatesMid /(\(\(actor\|overlay\|weapon\|item\)\s*,\=\s*\)\+)/ skipwhite skipempty nextgroup=zscStatesEnd
+sy  region zscStatesEnd transparent fold start=+{+ end=+}+ skipwhite skipempty contained contains=@zscStates
 
 sy keyword zscDefaultSta default skipwhite skipempty nextgroup=zscDefaultEnd
-sy  region zscDefaultEnd start=+{+ end=+}+ skipwhite skipempty contained contains=@ZscDefaults
+sy  region zscDefaultEnd transparent fold start=+{+ end=+}+ skipwhite skipempty contained contains=@zscDefaults
 
 " Highlighting ---------------------------------------------------------------|
+
+sy cluster zscBraces contains=zscDefaultEnd,zscStatesEnd,zscStateBlk,zscStatePrn
 
 hi def link zscStatesSta  StorageClass
 hi def link zscDefaultSta StorageClass
@@ -97,7 +106,9 @@ hi def link zscStateNum   Number
 hi def link zscStateLabel Label
 hi def link zscStateParam StorageClass
 hi def link zscStateType  Conditional
+hi def link zscStateFcn   Function
 
+hi def link zscSpecialChar Special
 hi def link zscType        Type
 hi def link zscStorage     StorageClass
 hi def link zscFlag        StorageClass
