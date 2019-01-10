@@ -96,31 +96,32 @@ sy  region zscDefaultEnd transparent fold start=+{+ end=+}+ skipwhite skipempty 
 
 sy cluster zscBraces contains=zscDefaultEnd,zscStatesEnd,zscStateBlk,zscStatePrn
 
-hi def link zscStatesSta  StorageClass
 hi def link zscDefaultSta StorageClass
+hi def link zscStatesSta  StorageClass
 
 hi def link zscDeftDefn Special
 hi def link zscDeftFlag Tag
 
-hi def link zscStateNum   Number
+hi def link zscStateFcn   Function
 hi def link zscStateLabel Label
+hi def link zscStateNum   Number
 hi def link zscStateParam StorageClass
 hi def link zscStateType  Conditional
-hi def link zscStateFcn   Function
 
-hi def link zscSpecialChar Special
-hi def link zscType        Type
-hi def link zscStorage     StorageClass
-hi def link zscFlag        StorageClass
-hi def link zscLabel       Label
-hi def link zscConstant    Constant
 hi def link zscComment     Comment
 hi def link zscConditional Conditional
-hi def link zscRepeat      Repeat
-hi def link zscNumber      Number
-hi def link zscString      String
+hi def link zscConstant    Constant
+hi def link zscFlag        StorageClass
+hi def link zscLabel       Label
 hi def link zscName        String
+hi def link zscNumber      Number
 hi def link zscOperator    Operator
+hi def link zscRepeat      Repeat
+hi def link zscSpecialChar Special
 hi def link zscStatement   Statement
+hi def link zscStorage     StorageClass
+hi def link zscString      String
+hi def link zscTodo        Todo
+hi def link zscType        Type
 
 " EOF
