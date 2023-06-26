@@ -13,10 +13,10 @@ sy sync maxlines=500
 
 " Class Definitions ----------------------------------------------------------|
 
-sy keyword zscType int8 uint8 int16 uint16 int uint float double float32 float64 string vector2 vector3 bool textureid spriteid statelabel void array map voidptr color sound sbyte byte short ushort name
+sy keyword zscType int8 uint8 int16 uint16 int uint float double float32 float64 string vector2 vector3 bool textureid spriteid statelabel void array map voidptr color sound sbyte byte short ushort name dictionary
 sy   match zscType /@/
 
-sy keyword zscStorage class struct enum const property extend flagdef let
+sy keyword zscStorage class struct enum const property extend flagdef let mixin
 
 sy keyword zscFlag abstract ui play replaces native version clearscope private protected meta transient readonly deprecated static virtualscope virtual override final action vararg internal latent
 
@@ -34,7 +34,7 @@ sy keyword zscLabel case
 
 sy keyword zscConditional else if switch
 
-sy keyword zscRepeat break continue do for goto return while until
+sy keyword zscRepeat break continue do for goto return while until foreach
 
 sy match zscNumber "\<\(0[0-7]*\|0[xX]\x\+\|\d\+\)[lL]\=\>"
 sy match zscNumber "\(\<\d\+\.\d*\|\.\d\+\)\([eE][-+]\=\d\+\)\=[fF]\="
